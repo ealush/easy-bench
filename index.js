@@ -79,18 +79,20 @@ const easyBench = (description) => {
         runner(index);
       }
     }
-    return result();
+    return result(count);
   };
 
-  const result = () => {
+  const result = (count) => {
     const res = fns.map(({ name, time }) => ({
       name,
-      time_ns: time + "ns",
-      time_ms: time / 1e6 + "ms",
-      time_s: time / 1e9 + "s",
+      nanoseconds: time,
+      milliseconds: time / 1e6,
+      seconds: time / 1e9,
     }));
-    console.log(`Benchmark for ${description}:`);
-    console.table(res);
+    console.log(
+      `Benchmark for ${description}. Iteration count: ${count} rounds each.`
+    );
+    console.table(res.sort((a, b) => a.nanoseconds - b.nanoseconds));
     return res;
   };
 
